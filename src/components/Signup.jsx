@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Signup = () => {
-  // Declaring state variables
+
+     // Declaring state variables
   const[username,setUsername] = useState("")
   const[email,setEmail] = useState("")
   const[password,setPassword] = useState("")
@@ -34,47 +35,37 @@ const Signup = () => {
     }
 
   }
-
-
   return (
-    <div className='container '>
+    <div className='container'>
+        <div className='row justify-content-center'>
+            <div className='formup col-md-6 card shadow m-2 p-4'>
+                <h1 className='header'>Sign Up</h1>
 
-      <div className='row justify-content-center'>
+                <h6 id='h6'>{loading}</h6><br />
+                <h6 id='h6'>{error}</h6> 
+                <h6 id='h6'>{success}</h6>
 
-        <div className='formup col-md-6 card shadow m-2 p-4'>
+                <form action=""onSubmit={handleSubmit}>
 
-          <div className=''>
+                    <fieldset>
 
-            <h1 className='header'>Sign up</h1>
+                        <input type="text" placeholder='Enter username' className='form-control' onChange={(e)=>setUsername(e.target.value)}/><br />
+                        <input type="email" placeholder='Enter email' className='form-control' onChange={(e)=>setEmail(e.target.value)}/><br />
+                        <input type="password" placeholder='Enter password' className='form-control' onChange={(e)=>setPassword(e.target.value)}/><br />
+                        <input type="tel" placeholder='Enter phone number' className='form-control' onChange={(e)=>setPhone(e.target.value)}/><br />
+                        <input type="submit" value="Sign In" className='btn btn-dark form-control'/><br />
+                    </fieldset><br />
 
-            {/* Binding values from form */}
-            <h6 id='h6'>{loading}</h6><br />
-            <h6 id='h6'>{error}</h6> 
-            <h6 id='h6'>{success}</h6>
+                    {/* Incase user already has an account */}
+                    <Link to = '/signin' className='btn btn-dark form-control'>Already have account, Sign in</Link><br />
 
 
-            {/* Sign up form */}
-            <form id='form'onSubmit={handleSubmit}>
+                </form>
 
-              <fieldset>
+            </div>
 
-                <input type="text" placeholder='Enter username' className='form-control' onChange={(e)=>setUsername(e.target.value)}/><br />
-                <input type="email" placeholder='Enter email' className='form-control' onChange={(e)=>setEmail(e.target.value)}/><br />
-                <input type="password" placeholder='Enter password' className='form-control' onChange={(e)=>setPassword(e.target.value)}/><br />
-                <input type="tel" placeholder='Enter phone number(254...)' className='form-control' onChange={(e)=>setPhone(e.target.value)}/><br />
-
-                <input type="submit" value="Sign up" className='btn btn-danger text-dark form-control'/>
-
-              </fieldset><br />
-
-              {/* Incase user already has an account */}
-              <Link to = '/signin' className='btn btn-dark text-danger form-control'>Already have account, Sign in</Link><br />
-
-            </form>
-          </div>
         </div>
 
-      </div>
     </div>
 
   )

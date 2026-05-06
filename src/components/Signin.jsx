@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 const Signin = () => {
 
-  // Declaring state variables
+     // Declaring state variables
   const[email,setEmail] = useState("")
   const[password,setPassword] = useState("")
 
@@ -41,37 +41,31 @@ const Signin = () => {
     }
 
   }
-
-
   return (
     <div className='container'>
-      
-      <div className='row justify-content-center'>
+        <div className='row justify-content-center'>
+            <div className='formin col-md-6 card shadow m-2 p-4'>
+                <h1 className='header'>Sign In</h1>
 
-        <div className='formin col-md-6 card shadow m-2 p-4'>
+                <h6 id='h6'>{loading}</h6><br />
+                <h6 id='h6'>{error}</h6><br />
+                <h6 id='h6'>{success}</h6>
 
-          <h1 className='header'>Signin</h1>
+                <form action="" onSubmit={handleSignin}>
+                    <fieldset>
+                        <input type="email" placeholder='Enter email' className='form-control' onChange={(e)=>setEmail(e.target.value)}/><br />
+                        <input type="password" placeholder='Enter password' className='form-control' onChange={(e)=>setPassword(e.target.value)}/><br />
+                        <input type="submit" value="Sign in" className='btn btn-dark form-control'/><br />
+                        <br /><Link to = "/signin" className='btn btn-dark w-100'>Don't have an Account ? Sign up</Link>
+                    </fieldset>
 
-          {/* Binding variables  */}
-          <h6 id='h6'>{loading}</h6><br />
-          <h6 id='h6'>{error}</h6><br />
-          <h6 id='h6'>{success}</h6>
+                </form>
 
-          <form action="" onSubmit={handleSignin}>
-
-            <input type="email" placeholder='Enter Email' className='formcontrol w-100' onChange={(e)=>setEmail(e.target.value)}/><br />
-            <br /><input type="password" placeholder='Enter Password' className='formcontrol w-100' onChange={(e)=>setPassword(e.target.value)}/><br /><br />
-            <input type="submit" value="Sign in" className='btn btn-danger text-dark formcontrol w-100'  />
-            <br /><Link to = "/signin" className='btn btn-dark text-danger w-100'>Don't have an Account ? Sign up</Link>
-
-          </form>
+            </div>
 
         </div>
-
-      </div>
-
+        
     </div>
-
   )
 }
 
