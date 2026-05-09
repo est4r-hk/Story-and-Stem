@@ -1,5 +1,8 @@
+import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../components/AuthContext";
 import ProductManager from "./ProductManager";
 import OrderManager from "./OrderManager";
 

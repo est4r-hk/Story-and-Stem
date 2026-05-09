@@ -1,14 +1,19 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Signup = () => {
+
+  const navigate = useNavigate();
 
      // Declaring state variables
   const[username,setUsername] = useState("")
   const[email,setEmail] = useState("")
   const[password,setPassword] = useState("")
   const[phone,setPhone] = useState("")
+
+  // Optional role
+  const [role, setRole] = useState("user");
 
   // Set up messages
   const[loading,setLoading] = useState("")
@@ -27,11 +32,33 @@ const Signup = () => {
       formData.append("password",password)
       formData.append("phone",phone)
 
+      // Optional role
+      formData.append("role", role);
+
       // Adding base url
       const response = await axios.post("https://estherhyrax.alwaysdata.net/api/signup",formData);
       setSuccess(response.data.success)
+
+      // 👤 AUTO LOGIN
+      // =========================
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username,
+          email,
+          phone,
+          role
+        })
+      );
+
+      // Redirect after signup
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+
     }catch(error){
-      setError(error)
+      setError(error.response?.data?.message ||
+        "Signup failed. Try again.")
     }
 
   }
@@ -49,15 +76,71 @@ const Signup = () => {
 
                     <fieldset>
 
-                        <input type="text" placeholder='Enter username' className='form-control' onChange={(e)=>setUsername(e.target.value)}/><br />
-                        <input type="email" placeholder='Enter email' className='form-control' onChange={(e)=>setEmail(e.target.value)}/><br />
-                        <input type="password" placeholder='Enter password' className='form-control' onChange={(e)=>setPassword(e.target.value)}/><br />
-                        <input type="tel" placeholder='Enter phone number' className='form-control' onChange={(e)=>setPhone(e.target.value)}/><br />
-                        <input type="submit" value="Sign In" className='btn btn-dark form-control'/><br />
+                        <input 
+                        type="text" 
+                        placeholder='Enter username' 
+                        className='form-control' 
+                        onChange={(e)=>setUsername(e.target.value)}/>
+                        <br />
+
+                        <input 
+                        type="email" 
+                        placeholder='Enter email' 
+                        className='form-control' 
+                        onChange={(e)=>setEmail(e.target.value)}/>
+                        <br />
+
+                        <input 
+                        type="password" 
+                        placeholder='Enter password' 
+                        className='form-control' 
+                        onChange={(e)=>setPassword(e.target.value)}/>
+                        <br />
+
+                        <input 
+                        type="tel" 
+                        placeholder='Enter phone number' 
+                        className='form-control' 
+                        onChange={(e)=>setPhone(e.target.value)}/>
+                        <br />
+
+                        {/* ROLE */}
+                        <select
+                          className='form-select mb-3'
+                          value={role}
+                          onChange={(e) =>
+                            setRole(e.target.value)
+                          }
+                        >
+                          <option value="user">
+                            Regular User
+                          </option>
+
+                          <option value="subscriber">
+                            Subscriber
+                          </option>
+
+                          {/* Optional admin */}
+                          <option value="admin">
+                            Admin
+                          </option>
+                        </select>
+
+
+                        <input 
+                        type="submit" 
+                        value="Sign Up" 
+                        className='btn btn-dark form-control'/>
+                        <br />
+
                     </fieldset><br />
 
                     {/* Incase user already has an account */}
-                    <Link to = '/signin' className='btn btn-dark form-control'>Already have account, Sign in</Link><br />
+                    <Link 
+                    to = '/signin' 
+                    className='btn btn-dark form-control'>
+                      Already have account, Sign in
+                      </Link><br />
 
 
                 </form>

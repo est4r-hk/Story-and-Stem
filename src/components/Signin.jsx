@@ -32,12 +32,26 @@ const Signin = () => {
         setSuccess(response.data.message)
         setLoading("")
         localStorage.setItem("user",JSON.stringify(response.data.user))
+        
+        // 👤 SAVE USER
+        // =========================
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...response.data.user,
+
+            // DEFAULT ROLE
+            role:
+              response.data.user.role || "user"
+          })
+        );
 
         // Navigation on success sign in
-        navigate("/")
+        navigate("/home")
       }
     }catch (error){
-      setError(error)
+      setError(error.response?.data?.message ||
+        "Invalid email or password")
     }
 
   }
@@ -53,10 +67,32 @@ const Signin = () => {
 
                 <form action="" onSubmit={handleSignin}>
                     <fieldset>
-                        <input type="email" placeholder='Enter email' className='form-control' onChange={(e)=>setEmail(e.target.value)}/><br />
-                        <input type="password" placeholder='Enter password' className='form-control' onChange={(e)=>setPassword(e.target.value)}/><br />
-                        <input type="submit" value="Sign in" className='btn btn-dark form-control'/><br />
-                        <br /><Link to = "/signin" className='btn btn-dark w-100'>Don't have an Account ? Sign up</Link>
+                        <input 
+                        type="email" 
+                        placeholder='Enter email' 
+                        className='form-control' 
+                        onChange={(e)=>setEmail(e.target.value)}/>
+                        <br />
+
+                        <input 
+                        type="password" 
+                        placeholder='Enter password' 
+                        className='form-control' 
+                        onChange={(e)=>setPassword(e.target.value)}/>
+                        <br />
+
+                        <input 
+                        type="submit" 
+                        value="Sign in" 
+                        className='btn btn-dark form-control'/>
+                        <br />
+
+                        <br />
+                        <Link to = "/signin" 
+                        className='btn btn-dark w-100'>
+                          Don't have an Account ? Sign up
+                        </Link>
+
                     </fieldset>
 
                 </form>

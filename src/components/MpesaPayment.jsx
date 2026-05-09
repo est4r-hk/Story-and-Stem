@@ -40,13 +40,13 @@ const handleSubmit = async(e)=>{
         <div className=''>
 
           <img className='product_img' src={img_url + product.product_photo} alt={product.product_photo}/>
-          <p className='text-danger'>Product Name:{product.product_name}</p>
+          <p className='text'>Product Name:{product.product_name}</p>
           <p className='text-warning'>Product Cost:{product.product_cost}</p>
 
           {/*  */}
-          <h6 className='text-danger'>{phone}</h6>
-          <h6 className='text-danger'>{message}</h6>
-          <h6 className='text-danger'>{error}</h6>
+          <h6 className='text-success'>{phone}</h6>
+          <h6 className='text-success'>{message}</h6>
+          <h6 className='text-success'>{error}</h6>
 
 
           {/* Phone input */}

@@ -1,9 +1,10 @@
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import React, { useContext } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { CartContext } from "../components/CartContext"; 
 
 function Wishlist() {
-  const { wishlist, removeFromWishlist, addToCart } =
-    useContext(CartContext);
+  const { wishlist, removeFromWishlist, addToCart } = useContext(CartContext);
 
   return (
     <div className="container mt-4">

@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
-const Mycarousel = () => {
+const Carousel = () => {
   return (
     <div className="container mt-4">
 
@@ -32,7 +32,7 @@ const Mycarousel = () => {
           <div className="carousel-item active">
 
             <img
-              src="images/fashion-landing.jpg"
+              src="images/fashion-landing6.webp"
               className="d-block w-100"
               alt="First slide"
               height="450px"
@@ -42,7 +42,7 @@ const Mycarousel = () => {
 
           <div className="carousel-item">
             <img
-              src="images/fashion-landing2.jpg"
+              src="images/fashion-landing7.webp"
               className="d-block w-100"
               alt="Second slide"
               height="450px"
@@ -53,7 +53,7 @@ const Mycarousel = () => {
           <div className="carousel-item">
 
             <img
-              src="images/fashion-landing3.jpg"
+              src="images/fashion-landing8.webp"
               className="d-block w-100"
               alt="Third slide"
               height="450px"
@@ -65,7 +65,7 @@ const Mycarousel = () => {
            <div className="carousel-item">
             
             <img
-              src="images/fashion-landing4.jpg"
+              src="images/fashion-landing9.webp"
               className="d-block w-100"
               alt="Forth slide"
               height="450px"

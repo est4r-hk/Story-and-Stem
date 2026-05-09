@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const ThemeContext = createContext();
 
@@ -10,54 +10,38 @@ export const ThemeProvider = ({ children }) => {
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-  // 🕒 Detect time-based theme (backup)
-  const getTimeTheme = () => {
-    const hour = new Date().getHours();
-    return hour >= 19 || hour < 6; // 7pm–6am = dark
-  };
-
-  // ⚡ Auto decide theme on load
+  // ⚡ Decide theme on first load
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
 
     if (savedTheme !== null) {
+      // ✅ Use saved user preference
       setDarkMode(JSON.parse(savedTheme));
     } else {
-      // priority: system → time fallback
+      // ✅ Fallback to system theme only once
       const systemDark = getSystemTheme();
-      const timeDark = getTimeTheme();
-
-      setDarkMode(systemDark ?? timeDark);
+      setDarkMode(systemDark);
     }
   }, []);
 
-  // 💾 Save changes
+  // 💾 Save theme whenever it changes
   useEffect(() => {
     localStorage.setItem("theme", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  // 👀 Listen for system theme changes (live switching)
+  // 🎨 Apply theme to body (better than wrapping div)
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    document.body.className = darkMode ? "dark-theme" : "light-theme";
+  }, [darkMode]);
 
-    const handleChange = (e) => {
-      setDarkMode(e.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
+  // 🔘 Toggle function
   const toggleTheme = () => {
     setDarkMode((prev) => !prev);
   };
 
   return (
     <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
-      <div className={darkMode ? "dark-theme" : "light-theme"}>
-        {children}
-      </div>
+      {children}
     </ThemeContext.Provider>
   );
 };
