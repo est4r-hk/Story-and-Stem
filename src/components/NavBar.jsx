@@ -140,7 +140,7 @@ function Navbar() {
                 </span>
               </li>
 
-              {/* LOGOUT */}
+              LOGOUT
               <li className="nav-item">
                 <button
                   onClick={handleLogout}
