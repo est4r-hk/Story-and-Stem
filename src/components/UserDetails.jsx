@@ -50,13 +50,7 @@ const UserDetails = () => {
             👋 Hello, {user?.username || 'User'}
           </div>
 
-          Logout Button
-          <button
-            className="btn btn-danger btn-sm"
-            onClick={handleLogout}
-          >
-            
-          </button>
+          
 
         </div>
       ) : (
