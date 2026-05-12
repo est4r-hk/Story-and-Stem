@@ -1,7 +1,7 @@
 function Terms() {
   return (
     <div className="container mt-4">
-      <h2>Terms & Conditions</h2>
+      <h2 className="header">Terms & Conditions</h2>
 
       <h5>1. Use of Service</h5>
       <p>

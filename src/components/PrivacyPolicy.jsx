@@ -2,7 +2,7 @@ import React from "react";
 function PrivacyPolicy() {
   return (
     <div className="container mt-4">
-      <h2>Privacy Policy</h2>
+      <h2 className="header">Privacy Policy</h2>
 
       <p>
         Welcome to Story and Stem. Your privacy is important to us.

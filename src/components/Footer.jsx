@@ -25,7 +25,7 @@ const Footer = () => {
 
           <div class="col-md-4">
 
-                    <h2 class=" text-center">Contact Us</h2>
+                    <h2 class=" text-center fw-semibold">Contact Us</h2>
 
                     <div>
                     <p class="text-dark"><b className=''>Telephone:</b> +254721364895/+25478901234</p>
@@ -36,7 +36,7 @@ const Footer = () => {
 
           {/* Social */}
           <div className="col-md-4 mb-4">
-            <h6 className="fw-semibold">Follow Us</h6>
+            <h6 className="fw-bold">Follow Us</h6>
             <div className="d-flex gap-3">
               <a href="http://www.facebook.com" className="footer-link text-dark">Facebook</a>
               <a href="http://www.x.com" className="footer-link text-dark">Twitter</a>
@@ -52,8 +52,8 @@ const Footer = () => {
         </div>
         
         <div className="text-center mt-4">
-            <Link to="/privacy" className="me-3">Privacy Policy</Link>
-            <Link to="/terms">Terms & Conditions</Link>
+            <Link to="/privacy" className="me-3 button2">Privacy Policy</Link>
+            <Link to="/terms" className="button2">Terms & Conditions</Link>
         </div>
 
       </div>

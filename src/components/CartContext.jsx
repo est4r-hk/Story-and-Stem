@@ -17,18 +17,29 @@ export const CartProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
 
   // =========================
-  // 📦 LOAD FROM STORAGE
+  // 📦 LOAD FROM STORAGE (SAFE VERSION)
   // =========================
   useEffect(() => {
 
-    const savedCart =
-      JSON.parse(localStorage.getItem("cart")) || [];
+    try {
 
-    const savedWishlist =
-      JSON.parse(localStorage.getItem("wishlist")) || [];
+      const savedCart =
+        JSON.parse(localStorage.getItem("cart")) || [];
 
-    setCart(savedCart);
-    setWishlist(savedWishlist);
+      const savedWishlist =
+        JSON.parse(localStorage.getItem("wishlist")) || [];
+
+      setCart(savedCart);
+      setWishlist(savedWishlist);
+
+    } catch (err) {
+
+      console.log("Storage load error:", err);
+
+      setCart([]);
+      setWishlist([]);
+
+    }
 
   }, []);
 
@@ -57,40 +68,39 @@ export const CartProvider = ({ children }) => {
   }, [wishlist]);
 
   // =========================
-  // ➕ ADD TO CART
+  // ➕ ADD TO CART (SAFE UPDATE)
   // =========================
   const addToCart = (item) => {
 
-    const exists = cart.find(
-      (i) =>
-        i.product_id === item.product_id
-    );
+    setCart(prev => {
 
-    if (exists) {
+      const exists = prev.find(
+        (i) => i.product_id === item.product_id
+      );
 
-      setCart(
-        cart.map((i) =>
+      if (exists) {
+
+        return prev.map((i) =>
           i.product_id === item.product_id
             ? {
                 ...i,
-                quantity:
-                  (i.quantity || 1) + 1
+                quantity: (i.quantity || 1) + 1
               }
             : i
-        )
-      );
+        );
 
-    } else {
+      }
 
-      setCart([
-        ...cart,
+      return [
+        ...prev,
         {
           ...item,
           quantity: 1
         }
-      ]);
+      ];
 
-    }
+    });
+
   };
 
   // =========================
@@ -98,12 +108,13 @@ export const CartProvider = ({ children }) => {
   // =========================
   const removeFromCart = (product_id) => {
 
-    setCart(
-      cart.filter(
+    setCart(prev =>
+      prev.filter(
         (item) =>
           item.product_id !== product_id
       )
     );
+
   };
 
   // =========================
@@ -111,17 +122,17 @@ export const CartProvider = ({ children }) => {
   // =========================
   const increaseQuantity = (product_id) => {
 
-    setCart(
-      cart.map((item) =>
+    setCart(prev =>
+      prev.map((item) =>
         item.product_id === product_id
           ? {
               ...item,
-              quantity:
-                (item.quantity || 1) + 1
+              quantity: (item.quantity || 1) + 1
             }
           : item
       )
     );
+
   };
 
   // =========================
@@ -129,8 +140,8 @@ export const CartProvider = ({ children }) => {
   // =========================
   const decreaseQuantity = (product_id) => {
 
-    setCart(
-      cart.map((item) =>
+    setCart(prev =>
+      prev.map((item) =>
         item.product_id === product_id
           ? {
               ...item,
@@ -142,6 +153,7 @@ export const CartProvider = ({ children }) => {
           : item
       )
     );
+
   };
 
   // =========================
@@ -154,23 +166,22 @@ export const CartProvider = ({ children }) => {
   };
 
   // =========================
-  // ❤️ SAVE FOR LATER
+  // ❤️ SAVE FOR LATER (WISHLIST FIXED)
   // =========================
   const saveForLater = (item) => {
 
-    const exists = wishlist.find(
-      (i) =>
-        i.product_id === item.product_id
-    );
+    setWishlist(prev => {
 
-    if (!exists) {
+      const exists = prev.find(
+        (i) => i.product_id === item.product_id
+      );
 
-      setWishlist([
-        ...wishlist,
-        item
-      ]);
+      if (exists) return prev;
 
-    }
+      return [...prev, item];
+
+    });
+
   };
 
   // =========================
@@ -178,24 +189,33 @@ export const CartProvider = ({ children }) => {
   // =========================
   const removeFromWishlist = (product_id) => {
 
-    setWishlist(
-      wishlist.filter(
+    setWishlist(prev =>
+      prev.filter(
         (item) =>
           item.product_id !== product_id
       )
     );
+
   };
 
   // =========================
-  // 💰 TOTAL PRICE
+  // 💰 TOTAL PRICE (SAFE)
   // =========================
   const cartTotal = cart.reduce(
     (total, item) =>
       total +
       (
-        Number(item.product_cost) *
+        Number(item.product_cost || item.price || 0) *
         (item.quantity || 1)
       ),
+    0
+  );
+
+  // =========================
+  // 📦 TOTAL ITEMS (NEW ADDITION)
+  // =========================
+  const cartItemsCount = cart.reduce(
+    (sum, item) => sum + (item.quantity || 1),
     0
   );
 
@@ -206,15 +226,18 @@ export const CartProvider = ({ children }) => {
 
         // cart
         cart,
-        cartTotal,
+        setCart,
         addToCart,
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,
         clearCart,
+        cartTotal,
+        cartItemsCount,
 
         // wishlist
         wishlist,
+        setWishlist,
         saveForLater,
         removeFromWishlist
 
@@ -224,5 +247,6 @@ export const CartProvider = ({ children }) => {
       {children}
 
     </CartContext.Provider>
+
   );
 };

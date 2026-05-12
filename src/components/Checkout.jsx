@@ -1,65 +1,120 @@
-import React from "react";
-import { useContext, useState } from "react";
-export const CartContext = React.createContext();
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "./CartContext";
 
 function Checkout() {
-  const { cart, total, clearCart } = useContext(CartContext);
-  const [phone, setPhone] = useState("");
 
-  const handlePayment = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/mpesa/stkpush", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          phone,
-          amount: total,
-        }),
-      });
+  const navigate = useNavigate();
 
-      const data = await res.json();
+  const {
+    cart,
+    cartTotal
+  } = useContext(CartContext);
 
-      if (data.success) {
-        alert("STK Push sent! Check your phone 📱");
-        clearCart();
-      } else {
-        alert("Payment failed");
+  // =========================
+  // GO TO MPESA PAGE
+  // =========================
+  const proceedToPayment = () => {
+
+    navigate("/makepayment", {
+      state: {
+        cart,
+        total: cartTotal
       }
-    } catch (error) {
-      console.error(error);
-      alert("Error processing payment");
-    }
+    });
   };
 
   return (
+
     <div className="container text-center mt-5">
-      <h2>Checkout</h2>
 
-      {cart.map((item, index) => (
-        <p key={index}>
-          {item.name} x {item.qty}
-        </p>
-      ))}
+      <h2 className="mb-4">
+        Checkout
+      </h2>
 
-      <h4>Total: KES {total}</h4>
+      {/* =========================
+          CART ITEMS
+      ========================= */}
 
-      <input
-        type="text"
-        placeholder="2547XXXXXXXX"
-        className="form-control w-50 mx-auto my-3"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
+      {cart.length === 0 ? (
 
-      <button className="btn btn-success" onClick={handlePayment}>
-        Pay with M-Pesa
+        <p>Your cart is empty 🛒</p>
+
+      ) : (
+
+        cart.map((item, index) => {
+
+          const price =
+            Number(
+              item.product_cost ||
+              item.price ||
+              0
+            );
+
+          const quantity =
+            item.quantity || 1;
+
+          const subtotal =
+            price * quantity;
+
+          return (
+
+            <div
+              key={index}
+              className="card p-3 mb-3 shadow-sm"
+            >
+
+              <h5>
+                {item.product_name || item.name}
+              </h5>
+
+              <p>
+                Quantity: {quantity}
+              </p>
+
+              <p>
+                Price:
+                {" "}
+                KES {price.toLocaleString()}
+              </p>
+
+              <p>
+                Subtotal:
+                {" "}
+                KES {subtotal.toLocaleString()}
+              </p>
+
+            </div>
+          );
+        })
+      )}
+
+      {/* =========================
+          TOTAL
+      ========================= */}
+
+      <h4 className="mt-4">
+        Total:
+        {" "}
+        KES {cartTotal.toLocaleString()}
+      </h4>
+
+      {/* =========================
+          PAYMENT BUTTON
+      ========================= */}
+
+      <button
+        className="btn btn-success mt-3"
+        onClick={proceedToPayment}
+        disabled={cart.length === 0}
+      >
+
+        Proceed to M-Pesa
+
       </button>
+
     </div>
   );
-
-  
-};
+}
 
 export default Checkout;
